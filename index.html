@@ -8,11 +8,7 @@
 <body style="font-family: Arial; text-align: center; padding: 40px; background:#0f172a; color:white;">
 
   <h1 style="font-size:40px;">DropMentor AI 🌍</h1>
-  <p style="opacity:0.7;">Find winning products in seconds</p>
-
-  <br>
-
-  <p>Get 3 winning dropshipping ideas instantly:</p>
+  <p style="opacity:0.7;">Find winning products & start dropshipping</p>
 
   <br>
 
@@ -23,19 +19,24 @@
 
   <br><br>
 
-  <input id="input" placeholder="Ask something like: what product should I sell?" 
-  style="width:300px; padding:12px; border-radius:8px; border:none; margin-right:10px;" />
+  <input id="input" placeholder="Ask: what product should I sell?" 
+  style="width:300px; padding:12px; border-radius:8px; border:none;" />
 
   <br><br>
 
-  <button onclick="send(false)" 
-  style="padding:12px 20px; border:none; border-radius:8px; background:#22c55e; color:white; cursor:pointer;">
-    Free Answer
+  <button onclick="send('free')" 
+  style="padding:10px 15px; border:none; border-radius:8px; background:#22c55e; color:white;">
+    Free
   </button>
 
-  <button onclick="unlockPro()" 
-  style="padding:12px 20px; border:none; border-radius:8px; background:#f59e0b; color:white; cursor:pointer; margin-left:10px;">
-    Unlock PRO
+  <button onclick="send('starter')" 
+  style="padding:10px 15px; border:none; border-radius:8px; background:#3b82f6; color:white; margin-left:10px;">
+    Starter (5€/week)
+  </button>
+
+  <button onclick="send('pro')" 
+  style="padding:10px 15px; border:none; border-radius:8px; background:#f59e0b; color:white; margin-left:10px;">
+    PRO (9€)
   </button>
 
   <p id="response" 
@@ -44,12 +45,12 @@
 
   <br>
 
-  <p style="opacity:0.7;">
-    Want profit, supplier, and ad strategy for these products?
+  <p style="opacity:0.6;">
+    Free = ideas • Starter = how to start • PRO = full strategy
   </p>
 
   <script>
-    async function send(isPro = false) {
+    async function send(tier = "free") {
       const message = document.getElementById("input").value;
       const lang = document.getElementById("lang").value;
 
@@ -61,7 +62,7 @@
           headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({ message: finalMessage, pro: isPro })
+          body: JSON.stringify({ message: finalMessage, tier })
         });
 
         const data = await res.json();
@@ -69,14 +70,6 @@
 
       } catch (err) {
         document.getElementById("response").innerText = "Error connecting to AI";
-      }
-    }
-
-    function unlockPro() {
-      const confirmed = confirm("PRO version costs 9€. Continue?");
-
-      if (confirmed) {
-        send(true);
       }
     }
   </script>
