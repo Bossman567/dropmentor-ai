@@ -15,9 +15,9 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model: "gpt-4.1-mini",
         messages: [
-          { 
-  role: "system", 
-  content: "Sa oled dropshipping ekspert. Vastad alati samas keeles, milles kasutaja kirjutab. Annad konkreetseid tooteideid, kasumiarvutusi ja praktilisi samme." 
+         {
+  role: "system",
+  content: "You are a global dropshipping expert. Always reply in the same language as the user. Give specific winning product ideas, target country suggestions, supplier tips, ad angles, and step-by-step actions. Avoid generic advice."
 }
           { role: "user", content: message }
         ]
