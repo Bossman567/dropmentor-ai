@@ -19,34 +19,39 @@
 
   <br><br>
 
-  <input id="input" placeholder="Ask anything (e.g. how to start with no money)" 
+  <input id="input" placeholder="Ask something like: how to start dropshipping?" 
   style="width:320px; padding:12px; border-radius:8px; border:none;" />
 
   <br><br>
 
   <button onclick="send('free')" 
   style="padding:10px 15px; border:none; border-radius:8px; background:#22c55e; color:white;">
-    Free (Basic)
+    Free
   </button>
 
   <button onclick="send('starter')" 
   style="padding:10px 15px; border:none; border-radius:8px; background:#3b82f6; color:white; margin-left:10px;">
-    Starter (Better)
+    Starter
   </button>
 
   <button onclick="send('pro')" 
   style="padding:10px 15px; border:none; border-radius:8px; background:#f59e0b; color:white; margin-left:10px;">
-    PRO (Full Strategy)
+    PRO
   </button>
 
   <p id="response" 
   style="margin-top:30px; max-width:650px; margin-left:auto; margin-right:auto; line-height:1.6;">
   </p>
 
+  <!-- 🔒 Locked content message -->
+  <p style="margin-top:20px; opacity:0.7;">
+    Parts of the answer are hidden 🔒 Upgrade to see full strategy
+  </p>
+
   <br>
 
   <p style="opacity:0.6;">
-    Same question • Different depth of answers
+    Free = preview • Starter = more details • PRO = full strategy
   </p>
 
   <script>
