@@ -4,29 +4,57 @@
   <meta charset="UTF-8">
   <title>DropMentor AI</title>
 </head>
-<body>
-  <h1>DropMentor AI</h1>
+<body style="font-family: Arial; text-align: center; padding: 40px;">
 
-  <input id="input" placeholder="Küsi midagi..." />
-  <button onclick="send()">Saada</button>
+  <h1>DropMentor AI 🌍</h1>
 
-  <p id="response"></p>
+  <p>Get 3 winning dropshipping products for free:</p>
+  <input placeholder="Enter your email..." />
+  <button>Get free products</button>
+
+  <br><br>
+
+  <select id="lang">
+    <option value="en">English</option>
+    <option value="et">Eesti</option>
+  </select>
+
+  <br><br>
+
+  <input id="input" placeholder="Ask anything about dropshipping..." style="width:300px; padding:10px;" />
+  <button onclick="send()">Send</button>
+
+  <p id="response" style="margin-top:20px; max-width:600px; margin-left:auto; margin-right:auto;"></p>
+
+  <br><br>
+
+  <p>Want a full dropshipping plan?</p>
+  <button onclick="alert('PRO version coming soon 🚀')">Unlock PRO</button>
 
   <script>
     async function send() {
       const message = document.getElementById("input").value;
+      const lang = document.getElementById("lang").value;
 
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ message })
-      });
+      const finalMessage = `[Language: ${lang}] ` + message;
 
-      const data = await res.json();
-      document.getElementById("response").innerText = data.reply;
+      try {
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ message: finalMessage })
+        });
+
+        const data = await res.json();
+        document.getElementById("response").innerText = data.reply;
+
+      } catch (err) {
+        document.getElementById("response").innerText = "Error connecting to AI";
+      }
     }
   </script>
+
 </body>
 </html>
