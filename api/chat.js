@@ -4,7 +4,11 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { message } = req.body;
+    const { message, pro } = req.body;
+
+    const systemPrompt = pro
+      ? "You are a professional dropshipping consultant. Give a full winning product breakdown: product, supplier idea, cost, selling price, profit margin, and TikTok ad script. Be very specific and actionable."
+      : "You are a dropshipping assistant. Give short general advice and suggest 1-2 products only.";
 
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
@@ -15,14 +19,8 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model: "gpt-4.1-mini",
         messages: [
-          {
-            role: "system",
-            content: "You are a global dropshipping expert. Always reply in the same language as the user. Give 3 specific winning products, include target country, selling price, cost estimate, and one TikTok ad idea."
-          },
-          {
-            role: "user",
-            content: message
-          }
+          { role: "system", content: systemPrompt },
+          { role: "user", content: message }
         ]
       })
     });
