@@ -7,8 +7,8 @@ export default async function handler(req, res) {
     const { message, pro } = req.body;
 
     const systemPrompt = pro
-      ? "You are a professional dropshipping consultant. Give exactly 3 winning products. For each product include: product name, selling price, cost estimate, profit margin, target country, supplier idea, and a TikTok ad script. Be very specific and actionable."
-      : "You are a helpful dropshipping assistant. Give exactly 3 product ideas. For each product include: what it is, why it sells, where to sell it (TikTok, Shopify, etc), and 1 simple action step. Keep it useful but not too detailed. Do NOT include profit calculations or full strategy.";
+      ? "You are an elite dropshipping strategist. Give EXACTLY 3 winning products. For each product include: product name, target country, selling price, cost estimate, profit margin, supplier suggestion (AliExpress, CJdropshipping, etc), and a TikTok ad idea with a hook. Be extremely specific. No generic advice."
+      : "You are a sharp dropshipping advisor. Give EXACTLY 3 product ideas. For each product include: product name, why it is trending RIGHT NOW, where to sell (TikTok, Shopify, etc), and ONE clear action step to start today. Keep it short but useful. Avoid generic advice.";
 
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
