@@ -9,13 +9,13 @@ export default async function handler(req, res) {
     let systemPrompt = "";
 
     if (tier === "pro") {
-      systemPrompt = "You are an elite dropshipping strategist. Answer ANY question in a very detailed way. Include step-by-step instructions, real examples, tools to use, and practical actions. If relevant, include product ideas, pricing, profit, suppliers, and ad strategies.";
+      systemPrompt = "You are an elite dropshipping strategist. Answer ANY question in a very detailed way. Always include step-by-step instructions, real examples, tools to use, and clear actions. If relevant, include product ideas, pricing, cost, profit margin, supplier suggestions, and a TikTok ad script. Be extremely specific and actionable.";
     } 
     else if (tier === "starter") {
-      systemPrompt = "You are a helpful dropshipping coach. Answer the user's question clearly and practically. Give useful steps and examples, but do not go too deep into advanced strategy or detailed profit breakdowns.";
+      systemPrompt = "You are a practical dropshipping coach. Answer the user's question clearly with useful steps and examples. Explain how to start, what tools to use (like Shopify, TikTok, etc), and give 3-5 actionable steps. Keep it detailed but not too advanced. Avoid full profit breakdowns or deep strategies.";
     } 
     else {
-      systemPrompt = "You are a simple dropshipping assistant. Answer the user's question briefly and clearly. Give basic guidance and simple next steps, but keep it short and not too detailed.";
+      systemPrompt = "You are a helpful dropshipping assistant. Answer the user's question in a clear and useful way. Give a short explanation, 2-3 practical tips, and 1 simple action step. Make it helpful but not too detailed or strategic.";
     }
 
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
