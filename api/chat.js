@@ -4,11 +4,19 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { message, pro } = req.body;
+    const { message, tier } = req.body;
 
-    const systemPrompt = pro
-      ? "You are an elite dropshipping strategist. Give EXACTLY 3 winning products. For each product include: product name, target country, selling price, cost estimate, profit margin, supplier suggestion (AliExpress, CJdropshipping, etc), and a TikTok ad idea with a hook. Be extremely specific. No generic advice."
-      : "You are a sharp dropshipping advisor. Give EXACTLY 3 product ideas. For each product include: product name, why it is trending RIGHT NOW, where to sell (TikTok, Shopify, etc), and ONE clear action step to start today. Keep it short but useful. Avoid generic advice.";
+    let systemPrompt = "";
+
+    if (tier === "pro") {
+      systemPrompt = "You are an elite dropshipping strategist. Give EXACTLY 3 winning products. For each include: product name, target country, selling price, cost estimate, profit margin, supplier suggestion (AliExpress, CJdropshipping, etc), a TikTok ad idea with a hook, and a clear step-by-step plan on how to start from zero.";
+    } 
+    else if (tier === "starter") {
+      systemPrompt = "You are a beginner-friendly dropshipping coach. Give EXACTLY 3 product ideas. For each include: what it is, why it sells, where to sell it, and explain step-by-step how to start (store setup, platform, basic marketing). Keep it simple but practical.";
+    } 
+    else {
+      systemPrompt = "You are a helpful dropshipping assistant. Give EXACTLY 3 product ideas. For each include: product name, why it is trending right now, where to sell it, and ONE simple action step to start today.";
+    }
 
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
