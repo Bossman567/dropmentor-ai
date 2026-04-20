@@ -1,19 +1,36 @@
-<p id="response"></p>
+!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>DropMentor AI</title>
+</head>
+<body>
+  <h1>DropMentor AI</h1>
+
+  <input id="input" placeholder="Küsi midagi..." />
+  <button onclick="send()">Saada</button>
+
+  <p id="response"></p>
 
   <script>
     async function send() {
       const message = document.getElementById("input").value;
 
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ message })
-      });
+      try {
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ message })
+        });
 
-      const data = await res.json();
-      document.getElementById("response").innerText = data.reply;
+        const data = await res.json();
+        document.getElementById("response").innerText = data.reply;
+
+      } catch (err) {
+        document.getElementById("response").innerText = "Error ühendusega";
+      }
     }
   </script>
 </body>
