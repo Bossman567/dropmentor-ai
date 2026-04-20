@@ -31,9 +31,16 @@
   <input id="input" placeholder="Ask anything about dropshipping..." 
   style="width:300px; padding:12px; border-radius:8px; border:none; margin-right:10px;" />
 
-  <button onclick="send()" 
+  <br><br>
+
+  <button onclick="send(false)" 
   style="padding:12px 20px; border:none; border-radius:8px; background:#22c55e; color:white; cursor:pointer;">
-    Send
+    Free Answer
+  </button>
+
+  <button onclick="unlockPro()" 
+  style="padding:12px 20px; border:none; border-radius:8px; background:#f59e0b; color:white; cursor:pointer; margin-left:10px;">
+    Unlock PRO
   </button>
 
   <p id="response" 
@@ -42,14 +49,10 @@
 
   <br><br>
 
-  <p>Want a full dropshipping plan?</p>
-  <button onclick="alert('PRO version coming soon 🚀')" 
-  style="padding:10px 20px; border:none; border-radius:8px; background:#f59e0b; color:white;">
-    Unlock PRO
-  </button>
+  <p style="opacity:0.7;">PRO gives: product + supplier + profit + ad strategy</p>
 
   <script>
-    async function send() {
+    async function send(isPro = false) {
       const message = document.getElementById("input").value;
       const lang = document.getElementById("lang").value;
 
@@ -61,7 +64,7 @@
           headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({ message: finalMessage })
+          body: JSON.stringify({ message: finalMessage, pro: isPro })
         });
 
         const data = await res.json();
@@ -69,6 +72,14 @@
 
       } catch (err) {
         document.getElementById("response").innerText = "Error connecting to AI";
+      }
+    }
+
+    function unlockPro() {
+      const confirmed = confirm("PRO version costs 9€. Continue?");
+
+      if (confirmed) {
+        send(true);
       }
     }
   </script>
