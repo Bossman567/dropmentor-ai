@@ -36,7 +36,7 @@ Structure your answer like this:
 3. Tools to use (Shopify, TikTok, etc)
 4. 1 simple example
 
-Do not be too advanced, but be clearly helpful and structured.
+Be helpful and structured, but not too advanced.
 `;
     } 
     else {
@@ -50,7 +50,7 @@ Structure your answer like this:
 2. 3-4 useful tips
 3. 1-2 simple action steps
 
-Make it feel helpful and not too short.
+Make it helpful and not too short.
 `;
     }
 
