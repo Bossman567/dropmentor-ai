@@ -12,65 +12,55 @@
 
   <br>
 
-  <select id="lang" style="padding:8px; border-radius:6px;">
-    <option value="en">English</option>
-    <option value="et">Eesti</option>
-  </select>
-
-  <br><br>
-
-  <input id="input" placeholder="Ask something like: how to start dropshipping?" 
+  <input id="input" placeholder="Ask something..." 
   style="width:320px; padding:12px; border-radius:8px; border:none;" />
 
   <br><br>
 
-  <button onclick="send('free')" 
-  style="padding:10px 15px; border:none; border-radius:8px; background:#22c55e; color:white;">
-    Free
+  <button onclick="send('free')" style="padding:10px; border-radius:8px;">Free</button>
+  <button onclick="send('starter')" style="padding:10px; border-radius:8px;">Starter</button>
+  <button onclick="send('pro')" style="padding:10px; border-radius:8px;">PRO</button>
+
+  <p id="response" style="margin-top:30px; max-width:600px; margin:auto;"></p>
+
+  <br><br>
+
+  <!-- 🔒 ADMIN -->
+  <button onclick="loadAdmin()" style="background:red; color:white; padding:10px; border-radius:8px;">
+    Open Admin
   </button>
 
-  <button onclick="send('starter')" 
-  style="padding:10px 15px; border:none; border-radius:8px; background:#3b82f6; color:white; margin-left:10px;">
-    Starter
-  </button>
-
-  <button onclick="send('pro')" 
-  style="padding:10px 15px; border:none; border-radius:8px; background:#f59e0b; color:white; margin-left:10px;">
-    PRO
-  </button>
-
-  <p id="response" 
-  style="margin-top:30px; max-width:650px; margin-left:auto; margin-right:auto; line-height:1.6;">
-  </p>
-
-  <br>
-
-  <p style="opacity:0.6;">
-    Free = basic • Starter = more guidance • PRO = full strategy
-  </p>
+  <pre id="admin" style="text-align:left; max-width:800px; margin:auto; margin-top:20px;"></pre>
 
   <script>
-    async function send(tier = "free") {
+    async function send(tier) {
       const message = document.getElementById("input").value;
-      const lang = document.getElementById("lang").value;
 
-      const finalMessage = `[Language: ${lang}] ` + message;
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ message, tier })
+      });
 
-      try {
-        const res = await fetch("/api/chat", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ message: finalMessage, tier })
-        });
+      const data = await res.json();
+      document.getElementById("response").innerText = data.reply;
+    }
 
-        const data = await res.json();
-        document.getElementById("response").innerText = data.reply;
+    async function loadAdmin() {
+      const key = prompt("Enter admin key:");
 
-      } catch (err) {
-        document.getElementById("response").innerText = "Error connecting to AI";
-      }
+      const res = await fetch("/api/chat", {
+        method: "GET",
+        headers: {
+          "x-admin-key": key
+        }
+      });
+
+      const data = await res.json();
+
+      document.getElementById("admin").innerText = JSON.stringify(data, null, 2);
     }
   </script>
 
