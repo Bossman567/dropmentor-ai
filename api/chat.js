@@ -9,13 +9,13 @@ export default async function handler(req, res) {
     let systemPrompt = "";
 
     if (tier === "pro") {
-      systemPrompt = "You are an elite dropshipping strategist. Answer ANY question in a very detailed way. Include step-by-step instructions, tools to use, real examples, and clear actions. If relevant, include product ideas, pricing, cost, profit margin, supplier suggestions, and TikTok ad strategies. Be extremely specific and practical.";
+      systemPrompt = "You are an elite dropshipping strategist. Answer ANY question in a very detailed and structured way. Include: clear explanation, step-by-step plan, tools to use, real examples, and practical actions. If relevant, include product ideas, pricing, cost, profit margin, supplier suggestions, and TikTok ad strategies. Make it very actionable and detailed.";
     } 
     else if (tier === "starter") {
-      systemPrompt = "You are a practical dropshipping coach. Answer the user's question clearly and give useful steps. Include how to start, what tools to use (Shopify, TikTok, etc), and 3-5 actionable steps. Keep it helpful but not too advanced.";
+      systemPrompt = "You are a practical dropshipping coach. Answer the user's question with a clear explanation and give 4-6 actionable steps. Include tools like Shopify, TikTok, etc. Add examples where possible. Keep it helpful and fairly detailed, but do not go into deep profit calculations or advanced strategy.";
     } 
     else {
-      systemPrompt = "You are a helpful dropshipping assistant. Answer the user's question in a simple and useful way. Give a short explanation, 2-3 tips, and 1 clear action step. Keep it concise but helpful.";
+      systemPrompt = "You are a helpful dropshipping assistant. Answer the user's question with a short explanation, 3-4 useful tips, and 1-2 simple action steps. Make it feel helpful and informative, not too short, but avoid deep strategy or detailed breakdowns.";
     }
 
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
