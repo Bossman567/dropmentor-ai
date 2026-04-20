@@ -43,8 +43,21 @@
   </p>
 
   <script>
+    const input = document.getElementById("input");
+
+    // ENTER klahv
+    input.addEventListener("keypress", function(e) {
+      if (e.key === "Enter") {
+        send('free');
+      }
+    });
+
     async function send(tier = "free") {
-      const message = document.getElementById("input").value;
+      const message = input.value;
+
+      if (!message) return;
+
+      document.getElementById("response").innerText = "Loading...";
 
       try {
         const res = await fetch("/api/chat", {
@@ -56,7 +69,10 @@
         });
 
         const data = await res.json();
+
         document.getElementById("response").innerText = data.reply;
+
+        input.value = ""; // puhasta input
 
       } catch (err) {
         document.getElementById("response").innerText = "Error connecting to AI";
