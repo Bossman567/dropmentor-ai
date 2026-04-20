@@ -4,32 +4,49 @@
   <meta charset="UTF-8">
   <title>DropMentor AI</title>
 </head>
-<body style="font-family: Arial; text-align: center; padding: 40px;">
 
-  <h1>DropMentor AI 🌍</h1>
+<body style="font-family: Arial; text-align: center; padding: 40px; background:#0f172a; color:white;">
+
+  <h1 style="font-size:40px;">DropMentor AI 🌍</h1>
+  <p style="opacity:0.7;">Find winning products in seconds</p>
+
+  <br>
 
   <p>Get 3 winning dropshipping products for free:</p>
-  <input placeholder="Enter your email..." />
-  <button>Get free products</button>
+  <input placeholder="Enter your email..." 
+  style="padding:10px; border-radius:8px; border:none;" />
+  <button style="padding:10px 15px; border:none; border-radius:8px; background:#3b82f6; color:white;">
+    Get free products
+  </button>
 
   <br><br>
 
-  <select id="lang">
+  <select id="lang" style="padding:8px; border-radius:6px;">
     <option value="en">English</option>
     <option value="et">Eesti</option>
   </select>
 
   <br><br>
 
-  <input id="input" placeholder="Ask anything about dropshipping..." style="width:300px; padding:10px;" />
-  <button onclick="send()">Send</button>
+  <input id="input" placeholder="Ask anything about dropshipping..." 
+  style="width:300px; padding:12px; border-radius:8px; border:none; margin-right:10px;" />
 
-  <p id="response" style="margin-top:20px; max-width:600px; margin-left:auto; margin-right:auto;"></p>
+  <button onclick="send()" 
+  style="padding:12px 20px; border:none; border-radius:8px; background:#22c55e; color:white; cursor:pointer;">
+    Send
+  </button>
+
+  <p id="response" 
+  style="margin-top:30px; max-width:600px; margin-left:auto; margin-right:auto; line-height:1.5;">
+  </p>
 
   <br><br>
 
   <p>Want a full dropshipping plan?</p>
-  <button onclick="alert('PRO version coming soon 🚀')">Unlock PRO</button>
+  <button onclick="alert('PRO version coming soon 🚀')" 
+  style="padding:10px 20px; border:none; border-radius:8px; background:#f59e0b; color:white;">
+    Unlock PRO
+  </button>
 
   <script>
     async function send() {
