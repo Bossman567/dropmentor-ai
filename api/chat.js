@@ -15,11 +15,14 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model: "gpt-4.1-mini",
         messages: [
-         {
-  role: "system",
-  content: "You are a global dropshipping expert. Always reply in the same language as the user. Give specific winning product ideas, target country suggestions, supplier tips, ad angles, and step-by-step actions. Avoid generic advice."
-}
-          { role: "user", content: message }
+          {
+            role: "system",
+            content: "You are a global dropshipping expert. Always reply in the same language as the user. Give 3 specific winning products, include target country, selling price, cost estimate, and one TikTok ad idea."
+          },
+          {
+            role: "user",
+            content: message
+          }
         ]
       })
     });
@@ -27,7 +30,7 @@ export default async function handler(req, res) {
     const data = await response.json();
 
     return res.status(200).json({
-      reply: data.choices[0].message.content
+      reply: data.choices?.[0]?.message?.content || "No response"
     });
 
   } catch (err) {
