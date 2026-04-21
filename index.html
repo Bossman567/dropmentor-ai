@@ -43,6 +43,14 @@
   </p>
 
   <script>
+    // 🧠 loo session ID (salvestub browserisse)
+    let sessionId = localStorage.getItem("sessionId");
+
+    if (!sessionId) {
+      sessionId = Math.random().toString(36).substring(2);
+      localStorage.setItem("sessionId", sessionId);
+    }
+
     const input = document.getElementById("input");
 
     // ENTER klahv
@@ -65,14 +73,14 @@
           headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({ message, tier })
+          body: JSON.stringify({ message, tier, sessionId })
         });
 
         const data = await res.json();
 
         document.getElementById("response").innerText = data.reply;
 
-        input.value = ""; // puhasta input
+        input.value = "";
 
       } catch (err) {
         document.getElementById("response").innerText = "Error connecting to AI";
