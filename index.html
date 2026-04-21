@@ -8,27 +8,35 @@
 <body style="margin:0; font-family:Arial; display:flex; height:100vh; background:#0f172a; color:white;">
 
   <!-- SIDEBAR -->
-  <div style="width:220px; background:#020617; padding:20px; border-right:1px solid #1e293b;">
-    <h3 style="margin-top:0;">DropMentor</h3>
-    <p style="opacity:0.6;">AI dropshipping assistant</p>
-    <hr style="border:0; border-top:1px solid #1e293b; margin:20px 0;">
-    <button onclick="newChat()" style="width:100%; padding:10px; border:none; border-radius:8px; background:#22c55e; color:white;">
+  <div style="width:260px; background:#020617; padding:20px; border-right:1px solid #1e293b; display:flex; flex-direction:column;">
+    <h3>DropMentor</h3>
+
+    <button onclick="newChat()" 
+    style="margin:15px 0; padding:10px; border:none; border-radius:8px; background:#22c55e; color:white;">
       + New Chat
     </button>
+
+    <div id="history" style="flex:1; overflow-y:auto;"></div>
   </div>
 
   <!-- MAIN -->
   <div style="flex:1; display:flex; flex-direction:column;">
 
+    <!-- HEADER -->
+    <div style="padding:15px; border-bottom:1px solid #1e293b;">
+      <b>DropMentor AI</b>
+      <span style="opacity:0.5;"> • PRO UI</span>
+    </div>
+
     <!-- CHAT -->
-    <div id="chat" style="flex:1; overflow-y:auto; padding:30px;"></div>
+    <div id="chat" style="flex:1; overflow-y:auto; padding:25px;"></div>
 
     <!-- INPUT -->
     <div style="padding:20px; border-top:1px solid #1e293b;">
       <div style="display:flex; gap:10px;">
         
-        <input id="input" placeholder="Ask anything about dropshipping..." 
-        style="flex:1; padding:14px; border-radius:10px; border:none; outline:none; background:#1e293b; color:white;" />
+        <input id="input" placeholder="Ask anything..." 
+        style="flex:1; padding:14px; border-radius:10px; border:none; background:#1e293b; color:white;" />
 
         <select id="tier" style="padding:12px; border-radius:10px;">
           <option value="free">Free</option>
@@ -37,7 +45,7 @@
         </select>
 
         <button onclick="send()" 
-        style="padding:14px 20px; border:none; border-radius:10px; background:linear-gradient(135deg,#22c55e,#16a34a); color:white;">
+        style="padding:14px 20px; border:none; border-radius:10px; background:#22c55e; color:white;">
           Send
         </button>
 
@@ -47,57 +55,99 @@
   </div>
 
   <script>
-    let sessionId = Math.random().toString(36).substring(2);
+    let chats = JSON.parse(localStorage.getItem("chats") || "[]");
+    let currentChat = null;
 
-    const chat = document.getElementById("chat");
+    const chatDiv = document.getElementById("chat");
+    const historyDiv = document.getElementById("history");
     const input = document.getElementById("input");
 
-    input.addEventListener("keypress", function(e) {
-      if (e.key === "Enter") send();
-    });
-
-    function newChat() {
-      chat.innerHTML = "";
-      sessionId = Math.random().toString(36).substring(2);
+    function save() {
+      localStorage.setItem("chats", JSON.stringify(chats));
     }
 
-    function addMessage(text, isUser) {
-      const wrapper = document.createElement("div");
-      wrapper.style.display = "flex";
-      wrapper.style.marginBottom = "20px";
+    function renderHistory() {
+      historyDiv.innerHTML = "";
+
+      chats.forEach((chat, i) => {
+        const item = document.createElement("div");
+        item.innerText = chat.title;
+        item.style.padding = "10px";
+        item.style.cursor = "pointer";
+        item.style.opacity = "0.7";
+
+        item.onclick = () => {
+          currentChat = chats[i];
+          renderChat();
+        };
+
+        historyDiv.appendChild(item);
+      });
+    }
+
+    function newChat() {
+      currentChat = {
+        id: Math.random().toString(36),
+        messages: [],
+        title: "New Chat"
+      };
+
+      chats.unshift(currentChat);
+      save();
+      renderHistory();
+      renderChat();
+    }
+
+    function renderChat() {
+      chatDiv.innerHTML = "";
+
+      currentChat.messages.forEach(msg => {
+        addMessage(msg.text, msg.user, false);
+      });
+    }
+
+    function addMessage(text, isUser, saveMsg = true) {
+      const wrap = document.createElement("div");
+      wrap.style.display = "flex";
+      wrap.style.marginBottom = "20px";
 
       const bubble = document.createElement("div");
-      bubble.style.maxWidth = "600px";
       bubble.style.padding = "14px";
       bubble.style.borderRadius = "12px";
-      bubble.style.lineHeight = "1.6";
+      bubble.style.maxWidth = "650px";
       bubble.style.whiteSpace = "pre-wrap";
 
       if (isUser) {
-        wrapper.style.justifyContent = "flex-end";
+        wrap.style.justifyContent = "flex-end";
         bubble.style.background = "#22c55e";
       } else {
-        wrapper.style.justifyContent = "flex-start";
+        wrap.style.justifyContent = "flex-start";
         bubble.style.background = "#1e293b";
 
-        // COPY BUTTON
         const copy = document.createElement("button");
         copy.innerText = "Copy";
-        copy.style.marginTop = "8px";
+        copy.style.marginLeft = "10px";
         copy.style.fontSize = "12px";
         copy.onclick = () => navigator.clipboard.writeText(text);
 
-        wrapper.appendChild(bubble);
-        wrapper.appendChild(copy);
+        wrap.appendChild(copy);
       }
 
       bubble.innerText = text;
+      wrap.appendChild(bubble);
+      chatDiv.appendChild(wrap);
 
-      wrapper.appendChild(bubble);
-      chat.appendChild(wrapper);
+      if (saveMsg) {
+        currentChat.messages.push({ text, user: isUser });
+        save();
+      }
 
-      chat.scrollTop = chat.scrollHeight;
+      chatDiv.scrollTop = chatDiv.scrollHeight;
     }
+
+    input.addEventListener("keypress", e => {
+      if (e.key === "Enter") send();
+    });
 
     async function send() {
       const message = input.value;
@@ -110,8 +160,8 @@
 
       const loading = document.createElement("div");
       loading.innerText = "Thinking...";
-      loading.style.opacity = "0.6";
-      chat.appendChild(loading);
+      loading.style.opacity = "0.5";
+      chatDiv.appendChild(loading);
 
       try {
         const res = await fetch("/api/chat", {
@@ -119,18 +169,36 @@
           headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({ message, tier, sessionId })
+          body: JSON.stringify({
+            message,
+            tier,
+            sessionId: currentChat.id
+          })
         });
 
         const data = await res.json();
 
-        chat.removeChild(loading);
+        chatDiv.removeChild(loading);
         addMessage(data.reply, false);
 
-      } catch (err) {
-        chat.removeChild(loading);
-        addMessage("Error connecting to AI", false);
+        if (currentChat.title === "New Chat") {
+          currentChat.title = message.slice(0, 25);
+          save();
+          renderHistory();
+        }
+
+      } catch {
+        chatDiv.removeChild(loading);
+        addMessage("Error connecting", false);
       }
+    }
+
+    // init
+    if (chats.length === 0) newChat();
+    else {
+      currentChat = chats[0];
+      renderHistory();
+      renderChat();
     }
   </script>
 
